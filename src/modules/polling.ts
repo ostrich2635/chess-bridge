@@ -149,9 +149,11 @@ export function startMonitoring(): void {
   if (analyzeBtn) analyzeBtn.classList.add('hidden');
   if (importStatus) importStatus.textContent = '';
 
+  localStorage.setItem('chess_bridge_is_monitoring', 'true');
   isFirstPoll = true;
   pollCycle(settings.username, settings.autoImport, settings.token);
   
+  if (pollingInterval) clearInterval(pollingInterval);
   pollingInterval = window.setInterval(() => {
     const currentSettings = loadSettings();
     pollCycle(currentSettings.username, currentSettings.autoImport, currentSettings.token);
@@ -163,6 +165,7 @@ export function stopMonitoring(): void {
     clearInterval(pollingInterval);
     pollingInterval = null;
   }
+  localStorage.removeItem('chess_bridge_is_monitoring');
   const monitorBtn = document.getElementById('monitor-btn');
   if (monitorBtn) {
     monitorBtn.innerHTML = '<span class="icon">▶</span> Start Monitoring';
@@ -251,5 +254,10 @@ export function initMonitorListeners(): void {
         analyzeBtn.removeAttribute('disabled');
       }
     });
+  }
+
+  if (localStorage.getItem('chess_bridge_is_monitoring') === 'true') {
+    console.log('[ChessBridge] Resuming active monitoring from stored localStorage state...');
+    startMonitoring();
   }
 }
