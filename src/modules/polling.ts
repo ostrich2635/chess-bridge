@@ -1,5 +1,5 @@
 import { GameData, StatusState } from '../types';
-import { loadSettings } from './storage';
+import { loadSettings, loadHistory, saveHistory } from './storage';
 import { showToast } from './toast';
 import { parsePGNHeaders } from './pgn';
 import { importToLichess } from './lichess';
@@ -107,6 +107,15 @@ async function pollCycle(username: string, autoImport: boolean, token: string): 
     if (isFirstPoll) {
       lastKnownGameUrl = game.url;
       isFirstPoll = false;
+      
+      const history = loadHistory();
+      const alreadyInHistory = history.some(h => h.chesscomUrl === game.url);
+      const isRecent = game.end_time && (Date.now() / 1000 - game.end_time < 7200);
+      
+      if (!alreadyInHistory && isRecent) {
+        console.log('[ChessBridge] Instant Catch-up: Detected recently completed game played while website was closed!');
+        await processNewGame(game, username, autoImport, token);
+      }
       return;
     }
 
@@ -238,7 +247,6 @@ export function initMonitorListeners(): void {
         }
         currentGameData.lichessUrl = url;
         
-        const { loadHistory, saveHistory } = await import('./storage');
         const history = loadHistory();
         if (history.length > 0 && history[0].timestamp === currentGameData.timestamp) {
           history[0].lichessUrl = url;
