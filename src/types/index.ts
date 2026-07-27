@@ -15,6 +15,7 @@ export interface Settings {
   username: string;
   token: string;
   autoImport: boolean;
+  avatar?: string;
 }
 
 export interface PGNHeaders {

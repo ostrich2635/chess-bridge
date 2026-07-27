@@ -110,7 +110,7 @@ async function pollCycle(username: string, autoImport: boolean, token: string): 
       
       const history = loadHistory();
       const alreadyInHistory = history.some(h => h.chesscomUrl === game.url);
-      const isRecent = game.end_time && (Date.now() / 1000 - game.end_time < 7200);
+      const isRecent = game.end_time && (Date.now() / 1000 - game.end_time < 172800);
       
       if (!alreadyInHistory && isRecent) {
         console.log('[ChessBridge] Instant Catch-up: Detected recently completed game played while website was closed!');

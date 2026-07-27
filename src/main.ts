@@ -3,6 +3,7 @@ import { initTabs } from './modules/tabs';
 import { initSettings } from './modules/settings';
 import { initMonitorListeners } from './modules/polling';
 import { renderHistory, initHistoryListeners } from './modules/history';
+import { initLogin } from './modules/login';
 
 function initCursorTracking(): void {
   const cursorOrb = document.getElementById('cursor-orb');
@@ -29,6 +30,7 @@ function init(): void {
   renderHistory();
   initHistoryListeners();
   initCursorTracking();
+  initLogin();
   
   console.log('[ChessBridge] Application ready.');
 }

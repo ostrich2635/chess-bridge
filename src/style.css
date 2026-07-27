@@ -1064,7 +1064,103 @@ input:checked + .switch-track .switch-thumb {
   }
 }
 
-/* 22. Responsive (max-width: 400px) */
+/* 22. Login Screen Overlay & User Chip */
+.login-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: radial-gradient(circle at center, rgba(15, 23, 42, 0.45) 0%, rgba(5, 10, 24, 0.85) 100%);
+  backdrop-filter: blur(12px);
+}
+
+.login-overlay.hidden {
+  display: none !important;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 2.5rem;
+  text-align: center;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(168, 85, 247, 0.15);
+}
+
+.login-header {
+  margin-bottom: 2rem;
+}
+
+.login-icon {
+  font-size: 3rem;
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.6));
+  animation: pulse 3s infinite ease-in-out;
+}
+
+.login-form {
+  text-align: left;
+}
+
+.user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.4rem 0.6rem 0.4rem 0.5rem;
+  border-radius: 9999px;
+  backdrop-filter: blur(8px);
+  margin-left: auto;
+}
+
+.user-chip.hidden {
+  display: none !important;
+}
+
+.user-chip-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--accent-purple);
+  background: var(--bg-tertiary);
+}
+
+.user-chip-name {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-logout {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.btn-logout:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--error);
+}
+
+/* 23. Responsive (max-width: 400px) */
 @media (max-width: 400px) {
   .tab-btn span:last-child {
     display: none;

@@ -21,8 +21,40 @@
     <!-- Toast notification container -->
     <div id="toast-container" aria-live="polite"></div>
 
+    <!-- Login Screen Overlay -->
+    <div id="login-overlay" class="login-overlay hidden">
+        <div class="card glass login-card fade-in">
+            <div class="login-header">
+                <span class="login-icon" aria-hidden="true">♞</span>
+                <h2>Welcome to Chess Bridge</h2>
+                <p class="card-subtitle">Log in with your Chess.com username to get started</p>
+            </div>
+            <form id="login-form" class="login-form" novalidate>
+                <div class="form-group">
+                    <label for="login-username">Chess.com Username <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">👤</span>
+                        <input type="text" id="login-username" placeholder="e.g. Hikaru, MagnusCarlsen" required autocomplete="off" spellcheck="false">
+                    </div>
+                    <span id="login-error" class="error-msg hidden"></span>
+                </div>
+                <div class="form-group">
+                    <label for="login-token">Lichess API Token <span class="optional">(Optional)</span></label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔑</span>
+                        <input type="password" id="login-token" placeholder="lip_..." autocomplete="off">
+                    </div>
+                    <small class="help-text">Required for one-click cloud analysis. <a href="https://lichess.org/account/oauth/token/create?scopes=study:write" target="_blank" rel="noopener">Generate on Lichess ↗</a></small>
+                </div>
+                <button type="submit" id="login-submit-btn" class="btn btn--primary btn--full">
+                    <span class="btn-text">Connect Account ♞</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- Application -->
-    <div class="app">
+    <div class="app" id="app-dashboard">
         <!-- Header -->
         <header class="app-header">
             <div class="logo">
@@ -31,6 +63,11 @@
                     <h1>Chess Analysis <span class="gradient-text">Bridge</span></h1>
                     <p class="tagline">Chess.com → Lichess Analysis</p>
                 </div>
+            </div>
+            <div id="user-profile-chip" class="user-chip hidden">
+                <img id="user-chip-avatar" src="" alt="" class="user-chip-avatar">
+                <span id="user-chip-name" class="user-chip-name"></span>
+                <button id="logout-btn" class="btn-logout" title="Logout" aria-label="Logout">✕</button>
             </div>
         </header>
 
