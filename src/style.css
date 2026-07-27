@@ -99,51 +99,49 @@ body {
   opacity: 0.2;
 }
 
-.bg-orb--cyan {
-  width: 400px;
-  height: 400px;
-  background-color: var(--accent-cyan);
+.bg-orb--purple-1 {
+  width: 450px;
+  height: 450px;
+  background-color: #9333ea;
   top: -100px;
   left: -100px;
-  animation: floatCyan 70s infinite alternate ease-in-out;
+  opacity: 0.22;
+  animation: floatPurple1 70s infinite alternate ease-in-out;
 }
 
-.bg-orb--purple {
-  width: 500px;
-  height: 500px;
+.bg-orb--purple-2 {
+  width: 550px;
+  height: 550px;
   background-color: var(--accent-purple);
   bottom: -150px;
   right: -100px;
-  animation: floatPurple 80s infinite alternate ease-in-out -10s;
+  opacity: 0.25;
+  animation: floatPurple2 80s infinite alternate ease-in-out -10s;
 }
 
-.bg-orb--blue {
-  width: 350px;
-  height: 350px;
-  background-color: #3b82f6;
-  top: 40%;
-  left: 60%;
-  animation: floatBlue 60s infinite alternate ease-in-out -5s;
+.bg-orb--cursor {
+  width: 380px;
+  height: 380px;
+  background-color: var(--accent-cyan);
+  filter: blur(120px);
+  opacity: 0;
+  top: 0;
+  left: 0;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  transform: translate(-500px, -500px);
 }
 
-@keyframes floatCyan {
+@keyframes floatPurple1 {
   0% { transform: translate(0, 0) scale(1); }
   33% { transform: translate(30%, 20%) scale(1.1); }
   66% { transform: translate(-10%, 40%) scale(0.9); }
   100% { transform: translate(0, 0) scale(1); }
 }
 
-@keyframes floatPurple {
+@keyframes floatPurple2 {
   0% { transform: translate(0, 0) scale(1); }
   33% { transform: translate(-20%, -30%) scale(0.9); }
   66% { transform: translate(10%, -50%) scale(1.2); }
-  100% { transform: translate(0, 0) scale(1); }
-}
-
-@keyframes floatBlue {
-  0% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(-40%, 10%) scale(1.2); }
-  66% { transform: translate(-20%, -20%) scale(0.8); }
   100% { transform: translate(0, 0) scale(1); }
 }
 
