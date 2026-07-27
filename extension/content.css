@@ -1,0 +1,66 @@
+/* Injected CSS for Chess.com game completion screen */
+
+#chess-bridge-analyze-btn {
+  background: linear-gradient(135deg, #00d4ff, #a855f7) !important;
+  color: #050a18 !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 1.4rem !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  margin-top: 12px !important;
+  margin-bottom: 8px !important;
+  width: 100% !important;
+  border: none !important;
+  border-radius: 0.8rem !important;
+  cursor: pointer !important;
+  padding: 1.4rem 2rem !important;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.25) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  text-decoration: none !important;
+  line-height: 1.2 !important;
+  position: relative !important;
+  overflow: hidden !important;
+  z-index: 100 !important;
+}
+
+#chess-bridge-analyze-btn:hover {
+  background: linear-gradient(135deg, #00e5ff, #b87aff) !important;
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.45), 0 4px 15px rgba(168, 85, 247, 0.3) !important;
+  transform: translateY(-2px) !important;
+  color: #000000 !important;
+}
+
+#chess-bridge-analyze-btn:active {
+  transform: translateY(0) scale(0.98) !important;
+}
+
+#chess-bridge-analyze-btn .bridge-icon {
+  font-size: 1.6rem !important;
+  line-height: 1 !important;
+}
+
+#chess-bridge-analyze-btn .bridge-arrow {
+  font-size: 1.2rem !important;
+  opacity: 0.8 !important;
+  transition: transform 0.2s ease !important;
+}
+
+#chess-bridge-analyze-btn:hover .bridge-arrow {
+  transform: translate(3px, -3px) !important;
+  opacity: 1 !important;
+}
+
+#chess-bridge-analyze-btn.loading {
+  opacity: 0.8 !important;
+  cursor: wait !important;
+}
+
+/* If button is inside new-game-buttons-buttons, make sure it fits nicely */
+.new-game-buttons-buttons {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
