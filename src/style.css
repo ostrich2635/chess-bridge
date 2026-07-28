@@ -585,7 +585,7 @@ input:checked + .switch-track .switch-thumb {
 }
 
 .history-dropdown-wrapper:hover {
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .history-dropdown-wrapper h2 {
