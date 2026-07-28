@@ -106,7 +106,7 @@ body {
   top: -100px;
   left: -100px;
   opacity: 0.22;
-  animation: floatPurple1 70s infinite alternate ease-in-out;
+  transition: transform 1s linear, opacity 1s linear;
 }
 
 .bg-orb--purple-2 {
@@ -116,6 +116,26 @@ body {
   bottom: -150px;
   right: -100px;
   opacity: 0.25;
+  transition: transform 1s linear, opacity 1s linear;
+}
+
+.bg-orb--green {
+  width: 400px;
+  height: 400px;
+  background-color: #10b981; /* Emerald green */
+  top: 50%;
+  left: 20%;
+  opacity: 0.15;
+  transition: transform 1s linear, opacity 1s linear;
+}
+
+.bg-orb--orange {
+  width: 480px;
+  height: 480px;
+  background-color: #f59e0b; /* Amber orange */
+  top: 30%;
+  right: 20%;
+  opacity: 0.15;
   transition: transform 1s linear, opacity 1s linear;
 }
 

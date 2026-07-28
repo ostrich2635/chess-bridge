@@ -22,10 +22,9 @@ function initCursorTracking(): void {
 }
 
 function initRandomOrbs(): void {
-  const orb1 = document.querySelector('.bg-orb--purple-1') as HTMLElement;
-  const orb2 = document.querySelector('.bg-orb--purple-2') as HTMLElement;
+  const orbs = document.querySelectorAll('.bg-orb:not(.bg-orb--cursor)');
   
-  if (!orb1 || !orb2) return;
+  if (orbs.length === 0) return;
 
   function moveOrb(orb: HTMLElement) {
     const maxX = window.innerWidth;
@@ -45,9 +44,10 @@ function initRandomOrbs(): void {
     setTimeout(() => moveOrb(orb), duration);
   }
 
-  // Initial call
-  setTimeout(() => moveOrb(orb1), 100);
-  setTimeout(() => moveOrb(orb2), 500);
+  // Initial call with staggered delays
+  orbs.forEach((orb, index) => {
+    setTimeout(() => moveOrb(orb as HTMLElement), index * 400);
+  });
 }
 
 function init(): void {
