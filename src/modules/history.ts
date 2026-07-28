@@ -2,6 +2,8 @@ import { GameData } from '../types';
 import { loadSettings, loadHistory, saveHistory, clearHistory } from './storage';
 import { showToast } from './toast';
 import { importToLichess } from './lichess';
+import { replayPGN } from './chess-engine';
+import { renderMiniBoard } from './board-renderer';
 
 export function addToHistory(gameData: GameData): void {
   const history = loadHistory();
@@ -33,8 +35,14 @@ export function renderHistory(): void {
   history.forEach((game, index) => {
     const resultClass = game.result.toLowerCase();
     let resultColor = 'var(--draw)';
-    if (game.result === 'Win') resultColor = 'var(--success)';
-    else if (game.result === 'Loss') resultColor = 'var(--error)';
+    let resultSymbol = '½';
+    if (game.result === 'Win') {
+      resultColor = 'var(--success)';
+      resultSymbol = '♛';
+    } else if (game.result === 'Loss') {
+      resultColor = 'var(--error)';
+      resultSymbol = '⚐';
+    }
 
     const formattedDate = new Date(game.timestamp).toLocaleString();
 
@@ -50,24 +58,44 @@ export function renderHistory(): void {
     entry.style.animationDelay = `${index * 0.05}s`;
     entry.innerHTML = `
       <div class="history-entry-accent" style="background: ${resultColor}"></div>
-      <div class="history-entry-top">
-        <span class="history-entry-date">${formattedDate}</span>
-        <span class="result-badge ${resultClass}">${game.result}</span>
-      </div>
-      <div class="history-entry-details">
-        <div class="history-entry-detail"><strong>vs</strong> ${game.opponent}</div>
-        <div class="history-entry-detail"><strong>as</strong> ${game.userColor}</div>
-        <div class="history-entry-detail"><strong>Opening:</strong> ${game.opening}</div>
-        <div class="history-entry-detail mono"><strong>Time:</strong> ${game.timeControl}</div>
-      </div>
-      <div class="history-entry-actions">
-        <a href="${game.chesscomUrl}" target="_blank">Chess.com ↗</a>
-        ${lichessLinkOrButton}
+      <div class="history-entry-body">
+        <div class="history-entry-info">
+          <div class="history-entry-top">
+            <span class="history-entry-date">${formattedDate}</span>
+            <span class="result-badge ${resultClass}">${resultSymbol} ${game.result}</span>
+          </div>
+          <div class="history-entry-details">
+            <div class="history-entry-detail"><strong>vs</strong> ${game.opponent}</div>
+            <div class="history-entry-detail"><strong>as</strong> ${game.userColor}</div>
+            <div class="history-entry-detail"><strong>Opening:</strong> ${game.opening}</div>
+            <div class="history-entry-detail mono"><strong>Time:</strong> ${game.timeControl}</div>
+          </div>
+          <div class="history-entry-actions">
+            <a href="${game.chesscomUrl}" target="_blank">Chess.com ↗</a>
+            ${lichessLinkOrButton}
+          </div>
+        </div>
+        <div class="history-entry-board"></div>
       </div>
     `;
     historyList.appendChild(entry);
+
+    // Render mini chessboard of final position
+    const boardContainer = entry.querySelector('.history-entry-board') as HTMLElement;
+    if (boardContainer && game.pgn) {
+      try {
+        const board = replayPGN(game.pgn);
+        const flipped = game.userColor === 'Black';
+        const canvas = renderMiniBoard(board, flipped);
+        boardContainer.appendChild(canvas);
+      } catch (e) {
+        console.warn('[ChessBridge] Could not render mini board:', e);
+        boardContainer.innerHTML = '<span class="board-error">♞</span>';
+      }
+    }
   });
 
+  // Attach import button listeners
   const importBtns = historyList.querySelectorAll('.import-history-btn');
   importBtns.forEach((btn) => {
     btn.addEventListener('click', async (e) => {

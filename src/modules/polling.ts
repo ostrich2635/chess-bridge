@@ -1,7 +1,7 @@
 import { GameData, StatusState } from '../types';
 import { loadSettings, loadHistory, saveHistory } from './storage';
 import { showToast } from './toast';
-import { parsePGNHeaders } from './pgn';
+import { parsePGNHeaders, extractOpeningName } from './pgn';
 import { importToLichess } from './lichess';
 import { addToHistory, renderHistory } from './history';
 
@@ -51,7 +51,7 @@ async function processNewGame(game: any, username: string, autoImport: boolean, 
     opponent,
     result,
     userColor,
-    opening: headers['Opening'] || 'Unknown',
+    opening: extractOpeningName(headers),
     eco: headers['ECO'] || '?',
     timeControl: game.time_class || 'Unknown',
     chesscomUrl: headers['Link'] || headers['Site'] || game.url,

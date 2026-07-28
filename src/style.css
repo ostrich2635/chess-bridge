@@ -786,6 +786,41 @@ input:checked + .switch-track .switch-thumb {
   overflow: hidden;
 }
 
+.history-entry-body {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.history-entry-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.history-entry-board {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.history-entry-board canvas {
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  width: 100px;
+  height: 100px;
+}
+
+.board-error {
+  font-size: 2rem;
+  opacity: 0.3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+}
+
 .history-entry:hover {
   border-color: var(--border-glass-hover);
   transform: translateY(-1px);
