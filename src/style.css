@@ -609,7 +609,7 @@ input:checked + .switch-track .switch-thumb {
   top: 100%;
   left: 0;
   margin-top: 0.5rem;
-  background: var(--bg-card);
+  background: var(--bg-glass);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
   padding: 0.5rem;
@@ -658,7 +658,7 @@ input:checked + .switch-track .switch-thumb {
   top: -1px;
   left: 100%;
   margin-left: 0.25rem;
-  background: var(--bg-card);
+  background: var(--bg-glass);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
   padding: 0.5rem;
