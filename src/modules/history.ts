@@ -3,6 +3,80 @@ import { loadSettings, loadHistory, saveHistory, clearHistory } from './storage'
 import { showToast } from './toast';
 import { importToLichess } from './lichess';
 
+export async function fixUnknownHistory(): Promise<void> {
+  const history = loadHistory();
+  const settings = loadSettings();
+  if (!settings.username || history.length === 0) return;
+
+  let needsUpdate = false;
+  
+  // Group unknown games by month (YYYY/MM) to optimize API calls
+  const fetchTasks = new Map<string, any>();
+
+  for (let i = 0; i < history.length; i++) {
+    const game = history[i];
+    if (game.opening === 'Unknown' || game.termination === 'Unknown') {
+      const date = new Date(game.timestamp);
+      const year = date.getUTCFullYear();
+      const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+      const archiveUrl = `https://api.chess.com/pub/player/${settings.username}/games/${year}/${month}`;
+      
+      if (!fetchTasks.has(archiveUrl)) {
+        try {
+          const res = await fetch(archiveUrl);
+          const data = await res.json();
+          fetchTasks.set(archiveUrl, data.games || []);
+        } catch (e) {
+          fetchTasks.set(archiveUrl, []);
+        }
+      }
+
+      const gamesData = fetchTasks.get(archiveUrl);
+      const apiGame = gamesData.find((g: any) => g.url === game.chesscomUrl);
+      
+      if (apiGame) {
+        // Fix Opening
+        if (typeof apiGame.eco === 'string' && apiGame.eco) {
+          try {
+            const parts = new URL(apiGame.eco).pathname.split('/').filter(Boolean);
+            const slug = parts[parts.length - 1];
+            if (slug) game.opening = slug.replace(/-/g, ' ');
+          } catch (e) {}
+        }
+        
+        // Fix Termination
+        if (apiGame.white && apiGame.black) {
+          const wRes = apiGame.white.result;
+          const bRes = apiGame.black.result;
+          let term = game.termination;
+          if (wRes === 'win' || bRes === 'win') {
+            const loserCode = wRes === 'win' ? bRes : wRes;
+            if (loserCode === 'checkmated') term = 'won by checkmate';
+            else if (loserCode === 'timeout') term = 'won on time';
+            else if (loserCode === 'resigned') term = 'won by resignation';
+            else if (loserCode === 'abandoned') term = 'won by abandonment';
+          } else if (wRes === bRes) {
+            if (wRes === 'agreed') term = 'Game drawn by agreement';
+            else if (wRes === 'repetition') term = 'Game drawn by repetition';
+            else if (wRes === 'stalemate') term = 'Game drawn by stalemate';
+            else if (wRes === 'insufficient') term = 'Game drawn by insufficient material';
+            else if (wRes === 'timevsinsufficient') term = 'Game drawn by timeout vs insufficient material';
+          }
+          game.termination = term;
+        }
+        
+        needsUpdate = true;
+      }
+    }
+  }
+
+  if (needsUpdate) {
+    saveHistory(history);
+    renderHistory();
+    console.log('[ChessBridge] Retroactively fixed Unknown history fields.');
+  }
+}
+
 export function addToHistory(gameData: GameData): void {
   const history = loadHistory();
   history.unshift(gameData);

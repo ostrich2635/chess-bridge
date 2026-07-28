@@ -2,7 +2,7 @@ import './style.css';
 import { initTabs } from './modules/tabs';
 import { initSettings } from './modules/settings';
 import { initMonitorListeners } from './modules/polling';
-import { renderHistory, initHistoryListeners } from './modules/history';
+import { renderHistory, initHistoryListeners, fixUnknownHistory } from './modules/history';
 import { initLogin } from './modules/login';
 
 function initCursorTracking(): void {
@@ -31,6 +31,7 @@ function init(): void {
   initHistoryListeners();
   initCursorTracking();
   initLogin();
+  fixUnknownHistory();
   
   console.log('[ChessBridge] Application ready.');
 }
