@@ -252,13 +252,14 @@ body {
 .tab-indicator {
   position: absolute;
   bottom: 4px;
-  left: var(--indicator-left, 4px);
-  width: var(--indicator-width, 33.33%);
+  left: var(--indicator-left, 100%);
+  width: var(--indicator-width, 0px);
   height: calc(100% - 8px);
   background: var(--gradient-subtle);
   border: 1px solid var(--border-glass-hover);
   border-radius: 20px;
-  transition: all var(--duration-slow) var(--ease-out);
+  opacity: var(--indicator-opacity, 0);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 0;
 }
 

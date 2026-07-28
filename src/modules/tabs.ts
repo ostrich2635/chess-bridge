@@ -9,6 +9,7 @@ export function initTabs(): void {
     const width = btn.offsetWidth;
     tabTrack.style.setProperty('--indicator-left', `${left}px`);
     tabTrack.style.setProperty('--indicator-width', `${width}px`);
+    tabTrack.style.setProperty('--indicator-opacity', `1`);
   }
 
   tabButtons.forEach(btn => {

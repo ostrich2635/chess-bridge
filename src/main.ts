@@ -28,12 +28,24 @@ function initRandomOrbs(): void {
   if (orbs.length === 0) return;
 
   function moveOrb(orb: HTMLElement) {
+    // Reset any CSS positioning so translate is predictable from (0,0)
+    orb.style.top = '0px';
+    orb.style.left = '0px';
+    
     const maxX = window.innerWidth;
     const maxY = window.innerHeight;
+    const size = orb.offsetWidth || 400; // fallback if not rendered yet
     
-    // Random position
-    const randomX = Math.floor(Math.random() * (maxX + 400)) - 200;
-    const randomY = Math.floor(Math.random() * (maxY + 400)) - 200;
+    // Keep centers strictly within the screen
+    // X range: from -size/2 to maxX - size/2
+    const minX = -size / 2;
+    const rangeX = maxX; // The center can be from 0 to maxX, meaning left goes from -size/2 to maxX - size/2
+    
+    const minY = -size / 2;
+    const rangeY = maxY;
+    
+    const randomX = minX + Math.floor(Math.random() * rangeX);
+    const randomY = minY + Math.floor(Math.random() * rangeY);
     
     // Extremely slow movement (60 to 120 seconds)
     const duration = Math.floor(Math.random() * 60000) + 60000;
