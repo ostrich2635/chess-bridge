@@ -51,16 +51,16 @@ export async function fixUnknownHistory(): Promise<void> {
           let term = game.termination;
           if (wRes === 'win' || bRes === 'win') {
             const loserCode = wRes === 'win' ? bRes : wRes;
-            if (loserCode === 'checkmated') term = 'won by checkmate';
-            else if (loserCode === 'timeout') term = 'won on time';
-            else if (loserCode === 'resigned') term = 'won by resignation';
-            else if (loserCode === 'abandoned') term = 'won by abandonment';
+            if (loserCode === 'checkmated') term = 'by checkmate';
+            else if (loserCode === 'timeout') term = 'on time';
+            else if (loserCode === 'resigned') term = 'by resignation';
+            else if (loserCode === 'abandoned') term = 'by abandonment';
           } else if (wRes === bRes) {
-            if (wRes === 'agreed') term = 'Game drawn by agreement';
-            else if (wRes === 'repetition') term = 'Game drawn by repetition';
-            else if (wRes === 'stalemate') term = 'Game drawn by stalemate';
-            else if (wRes === 'insufficient') term = 'Game drawn by insufficient material';
-            else if (wRes === 'timevsinsufficient') term = 'Game drawn by timeout vs insufficient material';
+            if (wRes === 'agreed') term = 'drawn by agreement';
+            else if (wRes === 'repetition') term = 'drawn by repetition';
+            else if (wRes === 'stalemate') term = 'drawn by stalemate';
+            else if (wRes === 'insufficient') term = 'drawn by insufficient material';
+            else if (wRes === 'timevsinsufficient') term = 'drawn by timeout vs insufficient material';
           }
           game.termination = term;
         }

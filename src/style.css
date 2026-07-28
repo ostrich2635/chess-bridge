@@ -147,7 +147,7 @@ body {
 
 /* 3. App Layout */
 .app {
-  max-width: 680px;
+  width: 69vw;
   margin: 0 auto;
   padding: 2rem 1.25rem;
 }
@@ -700,7 +700,7 @@ input:checked + .switch-track .switch-thumb {
 
 .game-details-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
 }
 
@@ -1071,6 +1071,7 @@ input:checked + .switch-track .switch-thumb {
 /* 21. Responsive (max-width: 599px) */
 @media (max-width: 599px) {
   .app {
+    width: 95vw;
     padding: 1rem;
   }
   

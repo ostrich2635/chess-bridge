@@ -67,16 +67,16 @@ async function processNewGame(game: any, username: string, autoImport: boolean, 
     
     if (wRes === 'win' || bRes === 'win') {
       const loserCode = wRes === 'win' ? bRes : wRes;
-      if (loserCode === 'checkmated') termination = 'won by checkmate';
-      else if (loserCode === 'timeout') termination = 'won on time';
-      else if (loserCode === 'resigned') termination = 'won by resignation';
-      else if (loserCode === 'abandoned') termination = 'won by abandonment';
+      if (loserCode === 'checkmated') termination = 'by checkmate';
+      else if (loserCode === 'timeout') termination = 'on time';
+      else if (loserCode === 'resigned') termination = 'by resignation';
+      else if (loserCode === 'abandoned') termination = 'by abandonment';
     } else if (wRes === bRes) {
-      if (wRes === 'agreed') termination = 'Game drawn by agreement';
-      else if (wRes === 'repetition') termination = 'Game drawn by repetition';
-      else if (wRes === 'stalemate') termination = 'Game drawn by stalemate';
-      else if (wRes === 'insufficient') termination = 'Game drawn by insufficient material';
-      else if (wRes === 'timevsinsufficient') termination = 'Game drawn by timeout vs insufficient material';
+      if (wRes === 'agreed') termination = 'drawn by agreement';
+      else if (wRes === 'repetition') termination = 'drawn by repetition';
+      else if (wRes === 'stalemate') termination = 'drawn by stalemate';
+      else if (wRes === 'insufficient') termination = 'drawn by insufficient material';
+      else if (wRes === 'timevsinsufficient') termination = 'drawn by timeout vs insufficient material';
     }
   }
 
