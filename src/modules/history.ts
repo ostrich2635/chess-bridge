@@ -65,6 +65,7 @@ export function renderHistory(): void {
           <div class="history-entry-details">
             <div class="history-entry-detail"><strong>vs</strong> ${game.opponent}</div>
             <div class="history-entry-detail"><strong>as</strong> ${game.userColor}</div>
+            <div class="history-entry-detail"><strong>Reason:</strong> ${game.termination || 'Unknown'}</div>
             <div class="history-entry-detail"><strong>Opening:</strong> ${game.opening}</div>
             <div class="history-entry-detail mono"><strong>Time:</strong> ${game.timeControl}</div>
           </div>

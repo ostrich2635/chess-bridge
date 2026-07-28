@@ -56,7 +56,8 @@ async function processNewGame(game: any, username: string, autoImport: boolean, 
     timeControl: game.time_class || 'Unknown',
     chesscomUrl: headers['Link'] || headers['Site'] || game.url,
     lichessUrl: null,
-    pgn: game.pgn
+    pgn: game.pgn,
+    termination: headers['Termination'] || 'Unknown'
   };
 
   currentGameData = gameData;

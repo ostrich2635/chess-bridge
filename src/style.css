@@ -814,7 +814,7 @@ input:checked + .switch-track .switch-thumb {
 }
 
 .history-entry-board img:hover {
-  transform: scale(2.2);
+  transform: scale(3.0);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
   z-index: 50;
 }

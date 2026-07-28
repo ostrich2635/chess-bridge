@@ -9,6 +9,7 @@ export interface GameData {
   chesscomUrl: string;
   lichessUrl: string | null;
   pgn: string;
+  termination?: string;
 }
 
 export interface Settings {
