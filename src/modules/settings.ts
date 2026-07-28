@@ -36,7 +36,8 @@ export function initSettings(): void {
       const newSettings = {
         username: usernameInput ? usernameInput.value.trim() : '',
         token: tokenInput ? tokenInput.value.trim() : '',
-        autoImport: autoImportToggle ? autoImportToggle.checked : false
+        autoImport: autoImportToggle ? autoImportToggle.checked : false,
+        avatar: settings.avatar
       };
       saveSettings(newSettings);
       showToast('Settings saved successfully', 'success');
