@@ -783,7 +783,6 @@ input:checked + .switch-track .switch-thumb {
   padding: 1rem 1.25rem;
   transition: all var(--duration-normal) var(--ease-out);
   position: relative;
-  overflow: hidden;
 }
 
 .history-entry-body {
@@ -804,18 +803,17 @@ input:checked + .switch-track .switch-thumb {
   justify-content: center;
 }
 
-.history-entry-board canvas {
+.history-entry-board img {
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   width: 100px;
   height: 100px;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
-  cursor: zoom-in;
   position: relative;
   z-index: 1;
 }
 
-.history-entry-board canvas:hover {
+.history-entry-board img:hover {
   transform: scale(2.2);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
   z-index: 50;
@@ -843,6 +841,8 @@ input:checked + .switch-track .switch-thumb {
   top: 0;
   bottom: 0;
   width: 3px;
+  border-top-left-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
 }
 
 .history-entry-top {

@@ -259,3 +259,27 @@ export function replayPGN(pgn: string): Board {
 
     return board;
 }
+
+/**
+ * Convert an 8x8 board array to a FEN position string (piece placement only).
+ * board[0] = rank 8, board[7] = rank 1
+ */
+export function boardToFEN(board: Board): string {
+    const rows: string[] = [];
+    for (let r = 0; r < 8; r++) {
+        let row = '';
+        let empty = 0;
+        for (let c = 0; c < 8; c++) {
+            const piece = board[r][c];
+            if (piece === '') {
+                empty++;
+            } else {
+                if (empty > 0) { row += empty; empty = 0; }
+                row += piece;
+            }
+        }
+        if (empty > 0) row += empty;
+        rows.push(row);
+    }
+    return rows.join('/');
+}

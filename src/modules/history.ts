@@ -2,8 +2,6 @@ import { GameData } from '../types';
 import { loadSettings, loadHistory, saveHistory, clearHistory } from './storage';
 import { showToast } from './toast';
 import { importToLichess } from './lichess';
-import { replayPGN } from './chess-engine';
-import { renderMiniBoard } from './board-renderer';
 
 export function addToHistory(gameData: GameData): void {
   const history = loadHistory();
@@ -32,7 +30,7 @@ export function renderHistory(): void {
 
   historyList.innerHTML = '';
 
-  history.forEach((game, index) => {
+  history.forEach(async (game, index) => {
     const resultClass = game.result.toLowerCase();
     let resultColor = 'var(--draw)';
     let resultSymbol = '½';
@@ -84,10 +82,15 @@ export function renderHistory(): void {
     const boardContainer = entry.querySelector('.history-entry-board') as HTMLElement;
     if (boardContainer && game.pgn) {
       try {
+        const { replayPGN, boardToFEN } = await import('./chess-engine');
         const board = replayPGN(game.pgn);
-        const flipped = game.userColor === 'Black';
-        const canvas = renderMiniBoard(board, flipped);
-        boardContainer.appendChild(canvas);
+        const fen = boardToFEN(board);
+        const pov = game.userColor === 'Black' ? 'black' : 'white';
+        
+        const img = document.createElement('img');
+        img.src = `https://fen2image.chessvision.ai/${fen}?pov=${pov}`;
+        img.alt = 'Final Board Position';
+        boardContainer.appendChild(img);
       } catch (e) {
         console.warn('[ChessBridge] Could not render mini board:', e);
         boardContainer.innerHTML = '<span class="board-error">♞</span>';
