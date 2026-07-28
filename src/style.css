@@ -809,6 +809,16 @@ input:checked + .switch-track .switch-thumb {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   width: 100px;
   height: 100px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  cursor: zoom-in;
+  position: relative;
+  z-index: 1;
+}
+
+.history-entry-board canvas:hover {
+  transform: scale(2.2);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  z-index: 50;
 }
 
 .board-error {
