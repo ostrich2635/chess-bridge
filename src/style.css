@@ -103,8 +103,9 @@ body {
   width: 450px;
   height: 450px;
   background-color: #9333ea;
-  top: -100px;
-  left: -100px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   opacity: 0.22;
   transition: transform 1s linear, opacity 1s linear;
 }
@@ -113,8 +114,9 @@ body {
   width: 550px;
   height: 550px;
   background-color: var(--accent-purple);
-  bottom: -150px;
-  right: -100px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   opacity: 0.25;
   transition: transform 1s linear, opacity 1s linear;
 }
@@ -124,7 +126,8 @@ body {
   height: 400px;
   background-color: #10b981; /* Emerald green */
   top: 50%;
-  left: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   opacity: 0.15;
   transition: transform 1s linear, opacity 1s linear;
 }
@@ -133,8 +136,9 @@ body {
   width: 480px;
   height: 480px;
   background-color: #f59e0b; /* Amber orange */
-  top: 30%;
-  right: 20%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   opacity: 0.15;
   transition: transform 1s linear, opacity 1s linear;
 }

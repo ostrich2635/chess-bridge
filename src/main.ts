@@ -28,30 +28,21 @@ function initRandomOrbs(): void {
   if (orbs.length === 0) return;
 
   function moveOrb(orb: HTMLElement) {
-    // Reset any CSS positioning so translate is predictable from (0,0)
-    orb.style.top = '0px';
-    orb.style.left = '0px';
-    
     const maxX = window.innerWidth;
     const maxY = window.innerHeight;
-    const size = orb.offsetWidth || 400; // fallback if not rendered yet
     
-    // Keep centers strictly within the screen
-    // X range: from -size/2 to maxX - size/2
-    const minX = -size / 2;
-    const rangeX = maxX; // The center can be from 0 to maxX, meaning left goes from -size/2 to maxX - size/2
-    
-    const minY = -size / 2;
-    const rangeY = maxY;
-    
-    const randomX = minX + Math.floor(Math.random() * rangeX);
-    const randomY = minY + Math.floor(Math.random() * rangeY);
+    // Calculate random position relative to the center of the screen.
+    // Since orbs start exactly in the center (top: 50%, left: 50%, translate(-50%, -50%)),
+    // an offset of up to maxX/2 in either direction keeps the center on screen.
+    const randomX = Math.floor((Math.random() - 0.5) * maxX);
+    const randomY = Math.floor((Math.random() - 0.5) * maxY);
     
     // Extremely slow movement (60 to 120 seconds)
     const duration = Math.floor(Math.random() * 60000) + 60000;
     
     orb.style.transition = `transform ${duration}ms linear, opacity ${duration}ms ease-in-out`;
-    orb.style.transform = `translate(${randomX}px, ${randomY}px) scale(${0.7 + Math.random() * 0.6})`;
+    // We retain the -50% centering logic by injecting it inside the translate calculation
+    orb.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px)) scale(${0.7 + Math.random() * 0.6})`;
     orb.style.opacity = `${0.15 + Math.random() * 0.15}`;
 
     setTimeout(() => moveOrb(orb), duration);
