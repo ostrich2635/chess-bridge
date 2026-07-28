@@ -7,6 +7,11 @@ export function initSettings(): void {
   const autoImportToggle = document.getElementById('auto-import-toggle') as HTMLInputElement | null;
   const toggleTokenBtn = document.getElementById('toggle-token-btn');
   const saveBtn = document.getElementById('save-settings-btn');
+  
+  // Modal Elements
+  const headerSettingsBtn = document.getElementById('header-settings-btn');
+  const closeSettingsBtn = document.getElementById('close-settings-btn');
+  const settingsModalOverlay = document.getElementById('settings-modal-overlay');
 
   const settings = loadSettings();
 
@@ -41,6 +46,34 @@ export function initSettings(): void {
       };
       saveSettings(newSettings);
       showToast('Settings saved successfully', 'success');
+      
+      // Close modal on save
+      if (settingsModalOverlay) {
+        settingsModalOverlay.classList.add('hidden');
+      }
+    });
+  }
+
+  // Modal Open/Close Logic
+  if (headerSettingsBtn && settingsModalOverlay) {
+    headerSettingsBtn.addEventListener('click', () => {
+      settingsModalOverlay.classList.remove('hidden');
+    });
+  }
+
+  if (closeSettingsBtn && settingsModalOverlay) {
+    closeSettingsBtn.addEventListener('click', () => {
+      settingsModalOverlay.classList.add('hidden');
+    });
+  }
+
+  // Close when clicking overlay backdrop
+  if (settingsModalOverlay) {
+    settingsModalOverlay.addEventListener('click', (e) => {
+      if (e.target === settingsModalOverlay) {
+        settingsModalOverlay.classList.add('hidden');
+      }
     });
   }
 }
+
