@@ -84,19 +84,49 @@ export function addToHistory(gameData: GameData): void {
   renderHistory();
 }
 
+interface HistoryFilter {
+  result: string | null;
+  format: string | null;
+  date: string | null;
+}
+const currentFilter: HistoryFilter = { result: null, format: null, date: null };
+
 export function renderHistory(): void {
   const historyList = document.getElementById('history-list');
   if (!historyList) return;
 
-  const history = loadHistory();
   const settings = loadSettings();
+  const allHistory = loadHistory();
+  let history = [...allHistory];
+
+  // Update dynamic format options based on all history
+  const formatSubMenu = document.getElementById('format-sub-menu');
+  if (formatSubMenu) {
+    const formats = Array.from(new Set(allHistory.map(g => g.timeControl))).filter(Boolean);
+    formatSubMenu.innerHTML = formats.map(f => `<div class="dropdown-item ${currentFilter.format === f ? 'active' : ''}" data-filter-type="format" data-filter-val="${f}">${f}</div>`).join('') + '<div class="dropdown-item filter-clear" data-filter-type="format" data-filter-val="">Clear Format</div>';
+  }
+
+  // Apply filters
+  if (currentFilter.result) {
+    history = history.filter(g => g.result.toLowerCase() === currentFilter.result!.toLowerCase());
+  }
+  if (currentFilter.format) {
+    history = history.filter(g => g.timeControl === currentFilter.format);
+  }
+  if (currentFilter.date) {
+    history = history.filter(g => {
+      const d = new Date(g.timestamp);
+      const gDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      return gDate === currentFilter.date;
+    });
+  }
 
   if (history.length === 0) {
     historyList.innerHTML = `
       <div class="empty-state">
         <div class="empty-icon">♟</div>
-        <h3>No games recorded yet</h3>
-        <p>Start monitoring to detect completed games</p>
+        <p class="empty-title">${allHistory.length > 0 ? 'No games match your filters' : 'No games recorded yet'}</p>
+        <p class="empty-desc">${allHistory.length > 0 ? 'Try clearing your filters' : 'Start monitoring to detect completed games'}</p>
       </div>
     `;
     return;
@@ -122,7 +152,7 @@ export function renderHistory(): void {
     if (game.lichessUrl) {
       lichessLinkOrButton = `<a href="${game.lichessUrl}" target="_blank">Analysis ↗</a>`;
     } else if (settings.token) {
-      lichessLinkOrButton = `<button class="import-history-btn" data-index="${index}">Import to Lichess</button>`;
+      lichessLinkOrButton = `<button class="import-history-btn" data-index="${allHistory.indexOf(game)}">Import to Lichess</button>`;
     }
 
     const entry = document.createElement('div');
@@ -213,5 +243,47 @@ export function initHistoryListeners(): void {
         showToast('History cleared', 'success');
       }
     });
+  }
+
+  const dropdownWrapper = document.getElementById('history-dropdown-wrapper');
+  if (dropdownWrapper) {
+    dropdownWrapper.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const item = target.closest('.dropdown-item[data-filter-type]') as HTMLElement;
+      if (item) {
+        const type = item.getAttribute('data-filter-type') as keyof HistoryFilter;
+        const val = item.getAttribute('data-filter-val');
+        
+        if (type && type !== 'date') {
+          currentFilter[type] = val || null;
+          
+          // Update active classes for visual feedback
+          const siblings = item.parentElement?.querySelectorAll('.dropdown-item');
+          siblings?.forEach(s => s.classList.remove('active'));
+          if (val) item.classList.add('active');
+          
+          renderHistory();
+        }
+      }
+    });
+  }
+
+  const dateInput = document.getElementById('filter-date-input') as HTMLInputElement | null;
+  if (dateInput) {
+    dateInput.addEventListener('change', (e) => {
+      const target = e.target as HTMLInputElement;
+      currentFilter.date = target.value || null;
+      renderHistory();
+    });
+    
+    // Clear date button
+    const clearDateBtn = document.querySelector('.dropdown-item[data-filter-type="date"]');
+    if (clearDateBtn) {
+      clearDateBtn.addEventListener('click', () => {
+        dateInput.value = '';
+        currentFilter.date = null;
+        renderHistory();
+      });
+    }
   }
 }

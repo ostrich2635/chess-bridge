@@ -207,7 +207,38 @@
             <!-- ═══════════ HISTORY TAB ═══════════ -->
             <section id="tab-history" class="tab-content" role="tabpanel">
                 <div class="history-toolbar">
-                    <h2>Game History</h2>
+                    <div class="history-dropdown-wrapper" id="history-dropdown-wrapper">
+                        <h2>Game History</h2>
+                        <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+                        
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item has-sub">
+                                <span>Result</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+                                <div class="sub-menu">
+                                    <div class="dropdown-item" data-filter-type="result" data-filter-val="Win">Win</div>
+                                    <div class="dropdown-item" data-filter-type="result" data-filter-val="Loss">Loss</div>
+                                    <div class="dropdown-item" data-filter-type="result" data-filter-val="Draw">Draw</div>
+                                    <div class="dropdown-item filter-clear" data-filter-type="result" data-filter-val="">Clear Filter</div>
+                                </div>
+                            </div>
+                            <div class="dropdown-item has-sub">
+                                <span>Format</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+                                <div class="sub-menu" id="format-sub-menu">
+                                    <!-- Populated dynamically based on history -->
+                                </div>
+                            </div>
+                            <div class="dropdown-item has-sub">
+                                <span>Date</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+                                <div class="sub-menu date-sub-menu">
+                                    <input type="date" id="filter-date-input" class="date-filter-input">
+                                    <div class="dropdown-item filter-clear" data-filter-type="date" data-filter-val="">Clear Date</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <button id="clear-history-btn" class="btn btn-ghost btn-sm">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                         Clear All

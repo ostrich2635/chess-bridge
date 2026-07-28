@@ -116,7 +116,7 @@ body {
   bottom: -150px;
   right: -100px;
   opacity: 0.25;
-  animation: floatPurple2 80s infinite alternate ease-in-out -10s;
+  transition: transform 1s linear, opacity 1s linear;
 }
 
 .bg-orb--cursor {
@@ -129,20 +129,6 @@ body {
   left: 0;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
   transform: translate(-500px, -500px);
-}
-
-@keyframes floatPurple1 {
-  0% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30%, 20%) scale(1.1); }
-  66% { transform: translate(-10%, 40%) scale(0.9); }
-  100% { transform: translate(0, 0) scale(1); }
-}
-
-@keyframes floatPurple2 {
-  0% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(-20%, -30%) scale(0.9); }
-  66% { transform: translate(10%, -50%) scale(1.2); }
-  100% { transform: translate(0, 0) scale(1); }
 }
 
 /* 3. App Layout */
@@ -582,8 +568,141 @@ input:checked + .switch-track .switch-thumb {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+/* History Dropdown Styling */
+.history-dropdown-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s ease-out;
+  margin-left: -1rem; /* Offset padding */
+}
+
+.history-dropdown-wrapper:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.history-dropdown-wrapper h2 {
+  margin-bottom: 0;
+  font-size: 1.25rem;
+}
+
+.dropdown-icon {
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+}
+
+.history-dropdown-wrapper:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 0.5rem;
+  min-width: 150px;
+  box-shadow: var(--shadow-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-5px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-item.has-sub:hover .sub-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.dropdown-item.active {
+  background: rgba(168, 85, 247, 0.2);
+  color: var(--accent-purple);
+  font-weight: 500;
+}
+
+.sub-menu {
+  position: absolute;
+  top: -1px;
+  left: 100%;
+  margin-left: 0.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 0.5rem;
+  min-width: 160px;
+  box-shadow: var(--shadow-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-5px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.date-sub-menu {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.date-filter-input {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-glass);
+  color: var(--text-main);
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  font-family: 'Space Grotesk', sans-serif;
+  color-scheme: dark;
+}
+
+.date-filter-input:focus {
+  outline: none;
+  border-color: var(--accent-purple);
+}
+
+.filter-clear {
+  color: var(--error);
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  justify-content: center;
+}
+
+.filter-clear:hover {
+  background: rgba(244, 63, 94, 0.15);
 }
 
 .status-badge {
