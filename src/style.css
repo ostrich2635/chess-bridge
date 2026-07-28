@@ -833,6 +833,7 @@ input:checked + .switch-track .switch-thumb {
   border-color: var(--border-glass-hover);
   transform: translateY(-1px);
   box-shadow: var(--shadow-card-hover);
+  z-index: 10;
 }
 
 .history-entry-accent {

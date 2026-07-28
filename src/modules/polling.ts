@@ -46,18 +46,52 @@ async function processNewGame(game: any, username: string, autoImport: boolean, 
     result = 'Win';
   }
 
+  let extractedOpening = 'Unknown';
+  if (typeof game.eco === 'string' && game.eco) {
+    try {
+      const urlObj = new URL(game.eco);
+      const parts = urlObj.pathname.split('/').filter(Boolean);
+      const slug = parts[parts.length - 1];
+      if (slug) {
+        extractedOpening = slug.replace(/-/g, ' ');
+      }
+    } catch (e) {
+      // Ignore invalid URL
+    }
+  }
+
+  let termination = headers['Termination'] || 'Unknown';
+  if (game.white && game.black) {
+    const wRes = game.white.result;
+    const bRes = game.black.result;
+    
+    if (wRes === 'win' || bRes === 'win') {
+      const loserCode = wRes === 'win' ? bRes : wRes;
+      if (loserCode === 'checkmated') termination = 'won by checkmate';
+      else if (loserCode === 'timeout') termination = 'won on time';
+      else if (loserCode === 'resigned') termination = 'won by resignation';
+      else if (loserCode === 'abandoned') termination = 'won by abandonment';
+    } else if (wRes === bRes) {
+      if (wRes === 'agreed') termination = 'Game drawn by agreement';
+      else if (wRes === 'repetition') termination = 'Game drawn by repetition';
+      else if (wRes === 'stalemate') termination = 'Game drawn by stalemate';
+      else if (wRes === 'insufficient') termination = 'Game drawn by insufficient material';
+      else if (wRes === 'timevsinsufficient') termination = 'Game drawn by timeout vs insufficient material';
+    }
+  }
+
   const gameData: GameData = {
     timestamp: Date.now(),
     opponent,
     result,
     userColor,
-    opening: extractOpeningName(headers),
+    opening: extractedOpening,
     eco: headers['ECO'] || '?',
     timeControl: game.time_class || 'Unknown',
     chesscomUrl: headers['Link'] || headers['Site'] || game.url,
     lichessUrl: null,
     pgn: game.pgn,
-    termination: headers['Termination'] || 'Unknown'
+    termination
   };
 
   currentGameData = gameData;
