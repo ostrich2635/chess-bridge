@@ -1,0 +1,13 @@
+{
+  "name": "Chess Bridge Automation",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
+  "forwardPorts": [5173],
+  "portsAttributes": {
+    "5173": {
+      "label": "Chess Bridge Live Site",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    }
+  },
+  "postAttachCommand": "npm install && npm run dev -- --host 0.0.0.0"
+}
