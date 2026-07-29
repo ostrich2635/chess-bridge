@@ -1495,3 +1495,105 @@ input:checked + .switch-track .switch-thumb {
     padding: 0.75rem 1rem;
   }
 }
+
+/* 24. Settings Modal Revamp */
+.settings-layout {
+  display: flex;
+  min-height: 400px;
+  gap: 1.5rem;
+  padding: 0;
+}
+
+.settings-sidebar {
+  width: 180px;
+  border-right: 1px solid var(--border-glass);
+  padding: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.settings-tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  text-align: left;
+  padding: 10px 1.5rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all var(--duration-fast);
+  border-left: 3px solid transparent;
+}
+
+.settings-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.settings-tab-btn.active {
+  color: var(--accent-cyan);
+  border-left-color: var(--accent-cyan);
+  background: rgba(0, 212, 255, 0.1);
+  font-weight: 500;
+}
+
+.settings-content {
+  flex: 1;
+  padding: 1.5rem 1.5rem 1.5rem 0;
+}
+
+.settings-pane {
+  display: none;
+}
+.settings-pane.active {
+  display: block;
+}
+
+.settings-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+
+.settings-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.settings-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.text-danger {
+  color: var(--error) !important;
+}
+
+.border-danger {
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+.settings-tab-btn.text-danger:hover, .settings-tab-btn.text-danger.active {
+  background: rgba(239, 68, 68, 0.1);
+  border-left-color: var(--error);
+}
+
+.btn-danger {
+  background: var(--error);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast);
+}
+.btn-danger:hover {
+  background: #dc2626;
+}
+
+.mt-4 { margin-top: 1.5rem; }

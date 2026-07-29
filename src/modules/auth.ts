@@ -10,23 +10,16 @@ import { showToast } from "./toast";
 import { fetchCloudData, loadSettings, saveSettings } from "./storage";
 import { initGreeting } from "./greeting";
 
-// Helper to convert chess.com username into a valid fake email for Firebase
-function formatEmail(username: string): string {
-  return `${username.toLowerCase().trim()}@chessbridge.local`;
-}
 
-// Extract username from fake email
-function extractUsername(email: string | null): string {
-  if (!email) return "";
-  return email.split('@')[0];
-}
 
 export function initAuthListeners() {
   const loginOverlay = document.getElementById('login-overlay');
   const authForm = document.getElementById('auth-form') as HTMLFormElement;
   const authModeToggle = document.getElementById('auth-mode-toggle');
   const authSubmitBtn = document.getElementById('auth-submit-btn');
+  const emailInput = document.getElementById('auth-email') as HTMLInputElement;
   const usernameInput = document.getElementById('auth-username') as HTMLInputElement;
+  const usernameGroup = document.getElementById('auth-username-group');
   const passwordInput = document.getElementById('auth-password') as HTMLInputElement;
   const headerUserDisplay = document.getElementById('header-user-display');
   const headerLogoutBtn = document.getElementById('header-logout-btn');
@@ -42,9 +35,11 @@ export function initAuthListeners() {
       if (isRegisterMode) {
         if (btnText) btnText.textContent = 'Register ♞';
         authModeToggle.textContent = 'Already have an account? Log In';
+        if (usernameGroup) usernameGroup.style.display = 'block';
       } else {
         if (btnText) btnText.textContent = 'Log In ♞';
         authModeToggle.textContent = 'Need an account? Register';
+        if (usernameGroup) usernameGroup.style.display = 'none';
       }
     });
   }
@@ -53,12 +48,17 @@ export function initAuthListeners() {
   if (authForm) {
     authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const username = usernameInput.value;
+      const email = emailInput.value.trim();
       const password = passwordInput.value;
-      const email = formatEmail(username);
+      const username = usernameInput.value.trim();
 
-      if (!username || !password) {
-        showToast("Username and password required.", "error");
+      if (!email || !password) {
+        showToast("Email and password required.", "error");
+        return;
+      }
+      
+      if (isRegisterMode && !username) {
+        showToast("Chess.com username required.", "error");
         return;
       }
 
@@ -68,6 +68,8 @@ export function initAuthListeners() {
       try {
         if (isRegisterMode) {
           await createUserWithEmailAndPassword(auth, email, password);
+          const settings = loadSettings();
+          saveSettings({ ...settings, username });
           showToast("Account created & logged in!", "success");
         } else {
           await signInWithEmailAndPassword(auth, email, password);
@@ -128,7 +130,7 @@ export function initAuthListeners() {
       saveSettings({ ...settings, token });
       showToast("Lichess token saved!", "success");
       
-      const username = extractUsername(auth.currentUser?.email || "");
+      const username = loadSettings().username || "User";
       proceedToDashboard(username);
     });
   }
@@ -136,7 +138,7 @@ export function initAuthListeners() {
   if (tokenSkipBtn) {
     tokenSkipBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      const username = extractUsername(auth.currentUser?.email || "");
+      const username = loadSettings().username || "User";
       proceedToDashboard(username);
     });
   }
@@ -144,19 +146,20 @@ export function initAuthListeners() {
   // Listen to Auth State Changes
   onAuthStateChanged(auth, async (user: User | null) => {
     if (user) {
+      // Load data from cloud, which populates localStorage
+      await fetchCloudData(user.uid);
+      
+      const settings = loadSettings();
+      const username = settings.username || "User";
+
       // User is logged in
-      const username = extractUsername(user.email);
       if (headerUserDisplay) {
         headerUserDisplay.classList.remove('hidden');
         headerUserDisplay.innerHTML = `☁️ Synced as <strong>${username}</strong>`;
       }
       if (headerLogoutBtn) headerLogoutBtn.classList.remove('hidden');
       
-      // Load data from cloud, which populates localStorage
-      await fetchCloudData(user.uid);
-      
       // Check if they need to setup token
-      const settings = loadSettings();
       const tokenSetupOverlay = document.getElementById('token-setup-overlay');
       
       if (!settings.token && tokenSetupOverlay) {

@@ -34,10 +34,17 @@
             </div>
             <form id="auth-form" class="login-form" novalidate>
                 <div class="form-group">
+                    <label for="auth-email">Email Address <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">✉️</span>
+                        <input type="email" id="auth-email" placeholder="e.g. you@example.com" required autocomplete="email" spellcheck="false">
+                    </div>
+                </div>
+                <div class="form-group" id="auth-username-group" style="display: none;">
                     <label for="auth-username">Chess.com Username <span class="required">*</span></label>
                     <div class="input-wrapper">
                         <span class="input-icon">👤</span>
-                        <input type="text" id="auth-username" placeholder="e.g. Hikaru, MagnusCarlsen" required autocomplete="username" spellcheck="false">
+                        <input type="text" id="auth-username" placeholder="e.g. Hikaru, MagnusCarlsen" autocomplete="username" spellcheck="false">
                     </div>
                 </div>
                 <div class="form-group">
@@ -257,53 +264,94 @@
                 <button id="close-settings-btn" class="btn-icon" aria-label="Close Settings">✕</button>
             </div>
 
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="chess-username">Chess.com Username</label>
-                    <div class="input-wrapper">
-                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                        <input type="text" id="chess-username" placeholder="Enter your Chess.com username" autocomplete="username">
-                    </div>
+            <div class="modal-body settings-layout">
+                <div class="settings-sidebar">
+                    <button class="settings-tab-btn active" data-settings-tab="general">General</button>
+                    <button class="settings-tab-btn" data-settings-tab="cloud">Cloud & Sync</button>
+                    <button class="settings-tab-btn text-danger" data-settings-tab="danger">Danger Zone</button>
                 </div>
+                
+                <div class="settings-content">
+                    <!-- General Tab -->
+                    <div id="settings-tab-general" class="settings-pane active">
+                        <div class="form-group">
+                            <label for="chess-username">Chess.com Username</label>
+                            <div class="input-wrapper">
+                                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                <input type="text" id="chess-username" placeholder="Enter your Chess.com username" autocomplete="username">
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                    <label for="lichess-token">Lichess Personal Access Token</label>
-                    <div class="input-wrapper has-toggle">
-                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                        <input type="password" id="lichess-token" placeholder="Paste your Lichess token" autocomplete="off">
-                        <button type="button" class="input-toggle" id="toggle-token-btn" aria-label="Toggle token visibility">
-                            <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                            <svg class="eye-closed hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        <div class="form-group">
+                            <label for="lichess-token">Lichess Personal Access Token</label>
+                            <div class="input-wrapper has-toggle">
+                                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                <input type="password" id="lichess-token" placeholder="Paste your Lichess token" autocomplete="off">
+                                <button type="button" class="input-toggle" id="toggle-token-btn" aria-label="Toggle token visibility">
+                                    <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    <svg class="eye-closed hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                </button>
+                            </div>
+                            <small class="help-link">
+                                <a href="https://lichess.org/account/oauth/token" target="_blank" rel="noopener noreferrer">
+                                    Get a token
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                </a>
+                                <span class="help-note">— No scopes needed</span>
+                            </small>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="form-group toggle-row">
+                            <div class="toggle-info">
+                                <span class="toggle-label">Auto-import to Lichess</span>
+                                <span class="toggle-desc">Automatically send games for analysis</span>
+                            </div>
+                            <label class="switch" for="auto-import-toggle">
+                                <input type="checkbox" id="auto-import-toggle">
+                                <span class="switch-track">
+                                    <span class="switch-thumb"></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <button id="save-settings-btn" class="btn btn-primary btn-full mt-4">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                            Save Settings
                         </button>
                     </div>
-                    <small class="help-link">
-                        <a href="https://lichess.org/account/oauth/token" target="_blank" rel="noopener noreferrer">
-                            Get a token
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                        </a>
-                        <span class="help-note">— No scopes needed</span>
-                    </small>
-                </div>
 
-                <div class="divider"></div>
-
-                <div class="form-group toggle-row">
-                    <div class="toggle-info">
-                        <span class="toggle-label">Auto-import to Lichess</span>
-                        <span class="toggle-desc">Automatically send games for analysis</span>
+                    <!-- Cloud Tab -->
+                    <div id="settings-tab-cloud" class="settings-pane hidden">
+                        <div class="settings-card">
+                            <h3>Force Sync</h3>
+                            <p class="settings-desc">Manually push your local settings and history to the cloud immediately.</p>
+                            <button id="force-sync-btn" class="btn btn-secondary">Sync Now</button>
+                        </div>
+                        <div class="settings-card" style="margin-top: 1rem;">
+                            <h3>Export Data</h3>
+                            <p class="settings-desc">Download a copy of all your local settings and game history.</p>
+                            <button id="export-data-btn" class="btn btn-secondary">Download JSON</button>
+                        </div>
                     </div>
-                    <label class="switch" for="auto-import-toggle">
-                        <input type="checkbox" id="auto-import-toggle">
-                        <span class="switch-track">
-                            <span class="switch-thumb"></span>
-                        </span>
-                    </label>
-                </div>
 
-                <button id="save-settings-btn" class="btn btn-primary btn-full">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                    Save Settings
-                </button>
+                    <!-- Danger Tab -->
+                    <div id="settings-tab-danger" class="settings-pane hidden">
+                        <div class="settings-card border-danger">
+                            <h3 class="text-danger">Change Password</h3>
+                            <div class="form-group">
+                                <input type="password" id="new-password" class="input-text" placeholder="New Password">
+                            </div>
+                            <button id="change-password-btn" class="btn btn-secondary text-danger">Update Password</button>
+                        </div>
+                        <div class="settings-card border-danger" style="margin-top: 1rem;">
+                            <h3 class="text-danger">Delete Account</h3>
+                            <p class="settings-desc">Permanently delete your account and all cloud data. This cannot be undone.</p>
+                            <button id="delete-account-btn" class="btn btn-danger">Delete My Account</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
