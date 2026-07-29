@@ -384,6 +384,28 @@ body {
   box-shadow: var(--shadow-glow-cyan);
 }
 
+#header-cloud-login-btn {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.4);
+  color: #818cf8;
+}
+
+#header-cloud-login-btn:hover {
+  background: rgba(99, 102, 241, 0.25);
+  border-color: rgba(99, 102, 241, 0.6);
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+}
+
+#header-logout-btn {
+  color: #f87171;
+}
+
+#header-logout-btn:hover {
+  background: rgba(248, 113, 113, 0.15);
+  border-color: rgba(248, 113, 113, 0.4);
+  box-shadow: 0 0 15px rgba(248, 113, 113, 0.3);
+}
+
 /* Greeting Section */
 .greeting-container {
   display: flex;
