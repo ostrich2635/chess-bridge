@@ -57,6 +57,33 @@
         </div>
     </div>
 
+    <!-- Token Setup Screen Overlay -->
+    <div id="token-setup-overlay" class="login-overlay hidden">
+        <div class="card glass login-card fade-in">
+            <div class="login-header">
+                <span class="login-icon" aria-hidden="true">🔑</span>
+                <h2>One Last Step</h2>
+                <p class="card-subtitle">Please provide your Lichess API Token to enable cloud analysis.</p>
+            </div>
+            <form id="token-setup-form" class="login-form" novalidate>
+                <div class="form-group">
+                    <label for="setup-lichess-token">Lichess API Token <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔑</span>
+                        <input type="password" id="setup-lichess-token" placeholder="lip_..." required autocomplete="off">
+                    </div>
+                    <small class="help-text">Required for one-click cloud analysis. <a href="https://lichess.org/account/oauth/token/create?scopes=study:write" target="_blank" rel="noopener">Generate on Lichess ↗</a></small>
+                </div>
+                <button type="submit" id="token-setup-btn" class="btn btn--primary btn--full">
+                    <span class="btn-text">Save & Continue ♞</span>
+                </button>
+                <div class="auth-actions" style="margin-top: 1rem; text-align: center;">
+                    <a href="#" id="token-skip-btn" class="auth-link" style="color: var(--text-secondary); text-decoration: none; font-size: 0.9rem;">Skip for now</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Application -->
     <div class="app" id="app-dashboard">
         <!-- Header -->

@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { auth } from "./firebase";
 import { showToast } from "./toast";
-import { fetchCloudData } from "./storage";
+import { fetchCloudData, loadSettings, saveSettings } from "./storage";
 import { initGreeting } from "./greeting";
 
 // Helper to convert chess.com username into a valid fake email for Firebase
@@ -96,6 +96,51 @@ export function initAuthListeners() {
     });
   }
 
+  // Helper to proceed to dashboard
+  function proceedToDashboard(username: string) {
+    const loginOverlay = document.getElementById('login-overlay');
+    const tokenSetupOverlay = document.getElementById('token-setup-overlay');
+    const appDashboard = document.getElementById('app-dashboard');
+    const userChip = document.getElementById('user-profile-chip');
+    const userChipName = document.getElementById('user-chip-name');
+
+    if (loginOverlay) loginOverlay.classList.add('hidden');
+    if (tokenSetupOverlay) tokenSetupOverlay.classList.add('hidden');
+    if (appDashboard) appDashboard.style.display = 'block';
+    if (userChip && userChipName) {
+      userChip.classList.remove('hidden');
+      userChipName.textContent = username;
+    }
+  }
+
+  // Token Setup Screen Listeners
+  const tokenSetupForm = document.getElementById('token-setup-form') as HTMLFormElement;
+  const tokenSetupInput = document.getElementById('setup-lichess-token') as HTMLInputElement;
+  const tokenSkipBtn = document.getElementById('token-skip-btn');
+
+  if (tokenSetupForm && tokenSetupInput) {
+    tokenSetupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const token = tokenSetupInput.value.trim();
+      if (!token) return;
+      
+      const settings = loadSettings();
+      saveSettings({ ...settings, token });
+      showToast("Lichess token saved!", "success");
+      
+      const username = extractUsername(auth.currentUser?.email || "");
+      proceedToDashboard(username);
+    });
+  }
+
+  if (tokenSkipBtn) {
+    tokenSkipBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const username = extractUsername(auth.currentUser?.email || "");
+      proceedToDashboard(username);
+    });
+  }
+
   // Listen to Auth State Changes
   onAuthStateChanged(auth, async (user: User | null) => {
     if (user) {
@@ -110,17 +155,19 @@ export function initAuthListeners() {
       // Load data from cloud, which populates localStorage
       await fetchCloudData(user.uid);
       
-      // We rely on login.ts initLogin() to show the dashboard if localStorage is populated.
-      // But if we just logged in, initLogin() already ran. We should call showDashboard manually.
-      // To avoid circular dependencies, we can just dispatch a custom event or manipulate the DOM directly.
-      if (loginOverlay) loginOverlay.classList.add('hidden');
-      const appDashboard = document.getElementById('app-dashboard');
-      if (appDashboard) appDashboard.style.display = 'block';
-      const userChip = document.getElementById('user-profile-chip');
-      const userChipName = document.getElementById('user-chip-name');
-      if (userChip && userChipName) {
-        userChip.classList.remove('hidden');
-        userChipName.textContent = username;
+      // Check if they need to setup token
+      const settings = loadSettings();
+      const tokenSetupOverlay = document.getElementById('token-setup-overlay');
+      
+      if (!settings.token && tokenSetupOverlay) {
+        // Show token setup screen
+        if (loginOverlay) loginOverlay.classList.add('hidden');
+        tokenSetupOverlay.classList.remove('hidden');
+        const appDashboard = document.getElementById('app-dashboard');
+        if (appDashboard) appDashboard.style.display = 'none';
+      } else {
+        // Skip setup, proceed to dashboard
+        proceedToDashboard(username);
       }
       
       // Refresh greeting
@@ -131,6 +178,9 @@ export function initAuthListeners() {
       if (headerLogoutBtn) headerLogoutBtn.classList.add('hidden');
       
       if (loginOverlay) loginOverlay.classList.remove('hidden');
+      const tokenSetupOverlay = document.getElementById('token-setup-overlay');
+      if (tokenSetupOverlay) tokenSetupOverlay.classList.add('hidden');
+      
       const appDashboard = document.getElementById('app-dashboard');
       if (appDashboard) appDashboard.style.display = 'none';
       const userChip = document.getElementById('user-profile-chip');
