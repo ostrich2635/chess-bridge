@@ -347,7 +347,7 @@ body {
 
 .modal {
   width: 100%;
-  max-width: 500px;
+  max-width: 650px;
   position: relative;
 }
 
@@ -478,7 +478,8 @@ label {
 }
 
 input[type='text'],
-input[type='password'] {
+input[type='password'],
+input[type='email'] {
   width: 100%;
   padding: 12px 14px 12px 42px;
   background: var(--bg-input);
@@ -492,7 +493,8 @@ input[type='password'] {
 }
 
 input[type='text']:focus,
-input[type='password']:focus {
+input[type='password']:focus,
+input[type='email']:focus {
   border-color: var(--border-glass-focus);
   box-shadow: 0 0 0 3px var(--accent-cyan-dim);
 }
@@ -1413,7 +1415,7 @@ input:checked + .switch-track .switch-thumb {
 
 .login-card {
   width: 100%;
-  max-width: 440px;
+  max-width: 500px;
   padding: 2.5rem;
   text-align: center;
   border: 1px solid rgba(168, 85, 247, 0.35);
