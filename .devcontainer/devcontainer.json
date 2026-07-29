@@ -9,5 +9,5 @@
       "visibility": "public"
     }
   },
-  "postAttachCommand": "npm install && npm run dev -- --host 0.0.0.0"
+  "postAttachCommand": "git pull && npm install && npm run dev -- --host 0.0.0.0"
 }
