@@ -22,13 +22,10 @@ function extractUsername(email: string | null): string {
 }
 
 export function initAuthListeners() {
-  const loginModalOverlay = document.getElementById('login-modal-overlay');
-  const cloudLoginBtn = document.getElementById('header-cloud-login-btn');
-  const closeLoginBtn = document.getElementById('close-login-btn');
+  const loginOverlay = document.getElementById('login-overlay');
   const authForm = document.getElementById('auth-form') as HTMLFormElement;
   const authModeToggle = document.getElementById('auth-mode-toggle');
   const authSubmitBtn = document.getElementById('auth-submit-btn');
-  const authTitle = document.getElementById('auth-title');
   const usernameInput = document.getElementById('auth-username') as HTMLInputElement;
   const passwordInput = document.getElementById('auth-password') as HTMLInputElement;
   const headerUserDisplay = document.getElementById('header-user-display');
@@ -36,39 +33,17 @@ export function initAuthListeners() {
 
   let isRegisterMode = false;
 
-  // Toggle modal
-  if (cloudLoginBtn && loginModalOverlay) {
-    cloudLoginBtn.addEventListener('click', () => {
-      loginModalOverlay.classList.remove('hidden');
-    });
-  }
-
-  if (closeLoginBtn && loginModalOverlay) {
-    closeLoginBtn.addEventListener('click', () => {
-      loginModalOverlay.classList.add('hidden');
-    });
-  }
-
-  if (loginModalOverlay) {
-    loginModalOverlay.addEventListener('click', (e) => {
-      if (e.target === loginModalOverlay) {
-        loginModalOverlay.classList.add('hidden');
-      }
-    });
-  }
-
   // Toggle Login/Register Mode
-  if (authModeToggle && authSubmitBtn && authTitle) {
+  if (authModeToggle && authSubmitBtn) {
     authModeToggle.addEventListener('click', (e) => {
       e.preventDefault();
       isRegisterMode = !isRegisterMode;
+      const btnText = authSubmitBtn.querySelector('.btn-text');
       if (isRegisterMode) {
-        authTitle.textContent = 'Create Cloud Account';
-        authSubmitBtn.textContent = 'Register';
+        if (btnText) btnText.textContent = 'Register ♞';
         authModeToggle.textContent = 'Already have an account? Log In';
       } else {
-        authTitle.textContent = 'Cloud Login';
-        authSubmitBtn.textContent = 'Log In';
+        if (btnText) btnText.textContent = 'Log In ♞';
         authModeToggle.textContent = 'Need an account? Register';
       }
     });
@@ -87,7 +62,8 @@ export function initAuthListeners() {
         return;
       }
 
-      if (authSubmitBtn) authSubmitBtn.textContent = 'Loading...';
+      const btnText = authSubmitBtn?.querySelector('.btn-text');
+      if (btnText) btnText.textContent = 'Loading...';
 
       try {
         if (isRegisterMode) {
@@ -97,13 +73,12 @@ export function initAuthListeners() {
           await signInWithEmailAndPassword(auth, email, password);
           showToast("Successfully logged in!", "success");
         }
-        if (loginModalOverlay) loginModalOverlay.classList.add('hidden');
         authForm.reset();
       } catch (error: any) {
         showToast(error.message, "error");
       } finally {
-        if (authSubmitBtn) {
-          authSubmitBtn.textContent = isRegisterMode ? 'Register' : 'Log In';
+        if (btnText) {
+          btnText.textContent = isRegisterMode ? 'Register ♞' : 'Log In ♞';
         }
       }
     });
@@ -126,23 +101,40 @@ export function initAuthListeners() {
     if (user) {
       // User is logged in
       const username = extractUsername(user.email);
-      if (cloudLoginBtn) cloudLoginBtn.classList.add('hidden');
       if (headerUserDisplay) {
         headerUserDisplay.classList.remove('hidden');
         headerUserDisplay.innerHTML = `☁️ Synced as <strong>${username}</strong>`;
       }
       if (headerLogoutBtn) headerLogoutBtn.classList.remove('hidden');
       
-      // Load data from cloud
+      // Load data from cloud, which populates localStorage
       await fetchCloudData(user.uid);
+      
+      // We rely on login.ts initLogin() to show the dashboard if localStorage is populated.
+      // But if we just logged in, initLogin() already ran. We should call showDashboard manually.
+      // To avoid circular dependencies, we can just dispatch a custom event or manipulate the DOM directly.
+      if (loginOverlay) loginOverlay.classList.add('hidden');
+      const appDashboard = document.getElementById('app-dashboard');
+      if (appDashboard) appDashboard.style.display = 'block';
+      const userChip = document.getElementById('user-profile-chip');
+      const userChipName = document.getElementById('user-chip-name');
+      if (userChip && userChipName) {
+        userChip.classList.remove('hidden');
+        userChipName.textContent = username;
+      }
       
       // Refresh greeting
       initGreeting();
     } else {
       // User is logged out
-      if (cloudLoginBtn) cloudLoginBtn.classList.remove('hidden');
       if (headerUserDisplay) headerUserDisplay.classList.add('hidden');
       if (headerLogoutBtn) headerLogoutBtn.classList.add('hidden');
+      
+      if (loginOverlay) loginOverlay.classList.remove('hidden');
+      const appDashboard = document.getElementById('app-dashboard');
+      if (appDashboard) appDashboard.style.display = 'none';
+      const userChip = document.getElementById('user-profile-chip');
+      if (userChip) userChip.classList.add('hidden');
     }
   });
 }
