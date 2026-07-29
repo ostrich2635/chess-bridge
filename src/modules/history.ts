@@ -156,7 +156,7 @@ export function renderHistory(): void {
     }
 
     const entry = document.createElement('div');
-    entry.className = 'history-entry';
+    entry.className = 'history-entry fade-in';
     entry.style.animationDelay = `${index * 0.05}s`;
     entry.innerHTML = `
       <div class="history-entry-accent" style="background: ${resultColor}"></div>

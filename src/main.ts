@@ -7,53 +7,6 @@ import { initLogin } from './modules/login';
 import { initGreeting } from './modules/greeting';
 import { initAuthListeners } from './modules/auth';
 
-function initCursorTracking(): void {
-  const cursorOrb = document.getElementById('cursor-orb');
-  if (!cursorOrb) return;
-
-  window.addEventListener('mousemove', (e: MouseEvent) => {
-    const x = e.clientX - 190; // center of 380px orb
-    const y = e.clientY - 190;
-    cursorOrb.style.transform = `translate(${x}px, ${y}px)`;
-    cursorOrb.style.opacity = '0.28';
-  });
-
-  window.addEventListener('mouseleave', () => {
-    cursorOrb.style.opacity = '0';
-  });
-}
-
-function initRandomOrbs(): void {
-  const orbs = document.querySelectorAll('.bg-orb:not(.bg-orb--cursor)');
-  
-  if (orbs.length === 0) return;
-
-  function moveOrb(orb: HTMLElement) {
-    const maxX = window.innerWidth;
-    const maxY = window.innerHeight;
-    
-    // Calculate random position relative to the center of the screen.
-    // Since orbs start exactly in the center (top: 50%, left: 50%, translate(-50%, -50%)),
-    // an offset of up to maxX/2 in either direction keeps the center on screen.
-    const randomX = Math.floor((Math.random() - 0.5) * maxX);
-    const randomY = Math.floor((Math.random() - 0.5) * maxY);
-    
-    // Extremely slow movement (60 to 120 seconds)
-    const duration = Math.floor(Math.random() * 60000) + 60000;
-    
-    orb.style.transition = `transform ${duration}ms linear, opacity ${duration}ms ease-in-out`;
-    // We retain the -50% centering logic by injecting it inside the translate calculation
-    orb.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px)) scale(${0.7 + Math.random() * 0.6})`;
-    orb.style.opacity = `${0.15 + Math.random() * 0.15}`;
-
-    setTimeout(() => moveOrb(orb), duration);
-  }
-
-  // Initial call with staggered delays
-  orbs.forEach((orb, index) => {
-    setTimeout(() => moveOrb(orb as HTMLElement), index * 400);
-  });
-}
 
 function init(): void {
   console.log('[ChessBridge] Initializing application...');
@@ -65,10 +18,8 @@ function init(): void {
   initMonitorListeners();
   renderHistory();
   initHistoryListeners();
-  initCursorTracking();
   initLogin();
   fixUnknownHistory();
-  initRandomOrbs();
 
   window.addEventListener('cloudDataSynced', () => {
     console.log('[ChessBridge] Cloud data synced, re-rendering UI...');
