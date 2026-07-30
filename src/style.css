@@ -1619,3 +1619,98 @@ input:checked + .switch-track .switch-thumb {
 }
 
 .mt-4 { margin-top: 1.5rem; }
+
+/* 13. Mobile Responsiveness */
+@media (max-width: 768px) {
+  /* Main Container */
+  .app {
+    width: 95vw;
+    padding: 1rem 0.75rem;
+  }
+
+  /* Header */
+  .app-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .logo {
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .header-actions {
+    justify-content: center;
+  }
+
+  /* Modals */
+  .modal {
+    width: 95vw;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .modal-body {
+    padding: 1rem;
+  }
+
+  /* Settings Layout */
+  .settings-layout {
+    flex-direction: column;
+  }
+
+  .settings-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-glass);
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+
+  .settings-tab-btn {
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    padding: 10px;
+    white-space: nowrap;
+  }
+
+  .settings-tab-btn.active {
+    border-left-color: transparent;
+    border-bottom-color: var(--accent-cyan);
+    background: linear-gradient(to top, rgba(0, 212, 255, 0.1), transparent);
+  }
+
+  /* Background Orbs adjustments */
+  .bg-orb {
+    filter: blur(80px);
+  }
+
+  /* Chess Analysis grid layout adjustments */
+  .engine-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .eval-bar-container {
+    height: 12px;
+  }
+
+  .tab-btn {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+  }
+
+  .greeting-title {
+    font-size: 2rem;
+  }
+
+  .greeting-subtitle {
+    font-size: 1rem;
+  }
+
+  .card.glass {
+    padding: 1.25rem;
+  }
+}
